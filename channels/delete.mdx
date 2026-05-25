@@ -1,31 +1,31 @@
 ---
-title: Deletar Canal
-description: Remove um canal da conta permanentemente.
+title: "Deletar canal"
+description: "Remove um canal da conta permanentemente."
 ---
 
+<Warning>
+  Esta operação é irreversível. O canal e todas as suas configurações serão removidos.
+</Warning>
+
 <Note>
-  **DELETE** `https://api.hadem.com.br/v1/channels/:id`
+  **DELETE** `https://api.hadem.chat/v1/channels/:id`
 </Note>
 
 ## Autenticação
 
-```bash
-Authorization: Bearer hm_live_xxxxxxxxxxxx
-```
+<Snippet file="snippets/auth.mdx" />
 
----
-
-## Exemplo
+## Exemplos
 
 <CodeGroup>
 
 ```bash cURL
-curl -X DELETE "https://api.hadem.com.br/v1/channels/ch_123" \
+curl -X DELETE "https://api.hadem.chat/v1/channels/ch_123" \
   -H "Authorization: Bearer hm_live_xxxxxxxxxxxx"
 ```
 
 ```js JavaScript
-await fetch("https://api.hadem.com.br/v1/channels/ch_123", {
+await fetch("https://api.hadem.chat/v1/channels/ch_123", {
   method: "DELETE",
   headers: {
     Authorization: `Bearer ${process.env.HADEM_API_TOKEN}`,
@@ -37,20 +37,16 @@ await fetch("https://api.hadem.com.br/v1/channels/ch_123", {
 import requests
 
 requests.delete(
-    "https://api.hadem.com.br/v1/channels/ch_123",
+    "https://api.hadem.chat/v1/channels/ch_123",
     headers={"Authorization": f"Bearer {HADEM_API_TOKEN}"},
 )
 ```
 
 </CodeGroup>
 
----
-
 ## Resposta
 
 Retorna `204 No Content` sem body.
-
----
 
 ## Erros
 

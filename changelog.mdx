@@ -1,0 +1,23 @@
+---
+title: "Changelog"
+description: "Atualizações e melhorias da API pública do Hadem."
+rss: true
+---
+
+<Update label="Maio 2025" description="v1.0.0" tags={["Mensagens", "Autenticação"]}>
+  ## Lançamento da API pública
+
+  Primeira versão da API pública do Hadem disponível para desenvolvedores.
+
+  ### Mensagens
+
+  - Novo endpoint `POST /v1/messages` para envio de mensagens via canal.
+  - Suporte aos tipos `text`, `template` e `media`.
+  - O `channelId` é informado no body da requisição — não como parâmetro de rota.
+
+  ### Autenticação
+
+  - Autenticação via Bearer token com escopos por operação.
+  - Escopo `messages:send` necessário para envio de mensagens.
+  - Tokens gerados em **Configurações → Desenvolvedores** no painel.
+</Update>

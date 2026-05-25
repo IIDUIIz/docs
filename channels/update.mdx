@@ -1,26 +1,22 @@
 ---
-title: Atualizar Canal
-description: Atualiza os dados de um canal da conta.
+title: "Atualizar canal"
+description: "Atualiza os dados de um canal da conta."
 ---
 
 <Note>
-  **PATCH** `https://api.hadem.com.br/v1/channels/:id`
+  **PATCH** `https://api.hadem.chat/v1/channels/:id`
 </Note>
 
 ## Autenticação
 
-```bash
-Authorization: Bearer hm_live_xxxxxxxxxxxx
-```
+<Snippet file="snippets/auth.mdx" />
 
----
-
-## Exemplo
+## Exemplos
 
 <CodeGroup>
 
 ```bash cURL
-curl -X PATCH "https://api.hadem.com.br/v1/channels/ch_123" \
+curl -X PATCH "https://api.hadem.chat/v1/channels/ch_123" \
   -H "Authorization: Bearer hm_live_xxxxxxxxxxxx" \
   -H "Content-Type: application/json" \
   -d '{
@@ -29,7 +25,7 @@ curl -X PATCH "https://api.hadem.com.br/v1/channels/ch_123" \
 ```
 
 ```js JavaScript
-const res = await fetch("https://api.hadem.com.br/v1/channels/ch_123", {
+const res = await fetch("https://api.hadem.chat/v1/channels/ch_123", {
   method: "PATCH",
   headers: {
     Authorization: `Bearer ${process.env.HADEM_API_TOKEN}`,
@@ -45,7 +41,7 @@ const channel = await res.json();
 import requests
 
 res = requests.patch(
-    "https://api.hadem.com.br/v1/channels/ch_123",
+    "https://api.hadem.chat/v1/channels/ch_123",
     headers={
         "Authorization": f"Bearer {HADEM_API_TOKEN}",
         "Content-Type": "application/json",
@@ -58,15 +54,11 @@ channel = res.json()
 
 </CodeGroup>
 
----
-
 ## Parâmetros
 
 | Campo | Tipo | Descrição |
 |-------|------|-----------|
 | `name` | `string` | Novo nome do canal |
-
----
 
 ## Resposta
 
@@ -78,8 +70,6 @@ channel = res.json()
   "status": "active"
 }
 ```
-
----
 
 ## Erros
 

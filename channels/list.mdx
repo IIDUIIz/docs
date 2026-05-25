@@ -1,31 +1,27 @@
 ---
-title: Listar Canais
-description: Retorna todos os canais ativos da conta.
+title: "Listar canais"
+description: "Retorna todos os canais ativos da conta."
 ---
 
 <Note>
-  **GET** `https://api.hadem.com.br/v1/channels`
+  **GET** `https://api.hadem.chat/v1/channels`
 </Note>
 
 ## Autenticação
 
-```bash
-Authorization: Bearer hm_live_xxxxxxxxxxxx
-```
+<Snippet file="snippets/auth.mdx" />
 
----
-
-## Exemplo
+## Exemplos
 
 <CodeGroup>
 
 ```bash cURL
-curl "https://api.hadem.com.br/v1/channels" \
+curl "https://api.hadem.chat/v1/channels" \
   -H "Authorization: Bearer hm_live_xxxxxxxxxxxx"
 ```
 
 ```js JavaScript
-const res = await fetch("https://api.hadem.com.br/v1/channels", {
+const res = await fetch("https://api.hadem.chat/v1/channels", {
   headers: {
     Authorization: `Bearer ${process.env.HADEM_API_TOKEN}`,
   },
@@ -38,7 +34,7 @@ const channels = await res.json();
 import requests
 
 res = requests.get(
-    "https://api.hadem.com.br/v1/channels",
+    "https://api.hadem.chat/v1/channels",
     headers={"Authorization": f"Bearer {HADEM_API_TOKEN}"},
 )
 
@@ -46,8 +42,6 @@ channels = res.json()
 ```
 
 </CodeGroup>
-
----
 
 ## Resposta
 
@@ -67,8 +61,6 @@ channels = res.json()
   }
 ]
 ```
-
----
 
 ## Erros
 

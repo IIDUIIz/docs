@@ -1,26 +1,22 @@
 ---
-title: Enviar Mensagem
-description: Envia uma mensagem para um contato pelo canal especificado.
+title: "Enviar mensagem"
+description: "Envia uma mensagem para um contato pelo canal especificado."
 ---
 
 <Note>
-  **POST** `https://api.hadem.com.br/v1/messages`
+  **POST** `https://api.hadem.chat/v1/messages`
 </Note>
 
 ## Autenticação
 
-```bash
-Authorization: Bearer hm_live_xxxxxxxxxxxx
-```
-
----
+<Snippet file="snippets/auth.mdx" />
 
 ## Exemplos
 
 <CodeGroup>
 
 ```bash cURL
-curl -X POST "https://api.hadem.com.br/v1/messages" \
+curl -X POST "https://api.hadem.chat/v1/messages" \
   -H "Authorization: Bearer hm_live_xxxxxxxxxxxx" \
   -H "Content-Type: application/json" \
   -d '{
@@ -34,7 +30,7 @@ curl -X POST "https://api.hadem.com.br/v1/messages" \
 ```
 
 ```js JavaScript
-const res = await fetch("https://api.hadem.com.br/v1/messages", {
+const res = await fetch("https://api.hadem.chat/v1/messages", {
   method: "POST",
   headers: {
     Authorization: `Bearer ${process.env.HADEM_API_TOKEN}`,
@@ -57,7 +53,7 @@ const { requestId } = await res.json();
 import requests
 
 res = requests.post(
-    "https://api.hadem.com.br/v1/messages",
+    "https://api.hadem.chat/v1/messages",
     headers={
         "Authorization": f"Bearer {HADEM_API_TOKEN}",
         "Content-Type": "application/json",
@@ -77,8 +73,6 @@ request_id = res.json()["requestId"]
 
 </CodeGroup>
 
----
-
 ## Parâmetros
 
 | Campo | Tipo | Obrigatório | Descrição |
@@ -90,8 +84,6 @@ request_id = res.json()["requestId"]
 | `message.type` | `"text"` \| `"template"` \| `"media"` | ✓ | Tipo da mensagem |
 | `flowId` | `string` | — | Associa o envio a um flow existente na conta |
 | `closeConversation` | `boolean` | — | Encerra a conversa aberta antes de enviar |
-
----
 
 ## Tipos de mensagem
 
@@ -149,8 +141,6 @@ request_id = res.json()["requestId"]
 
 Valores aceitos em `mediaType`: `image`, `video`, `document`, `audio`.
 
----
-
 ## Resposta
 
 ```json
@@ -162,8 +152,6 @@ Valores aceitos em `mediaType`: `image`, `video`, `document`, `audio`.
 | Campo | Tipo | Descrição |
 |-------|------|-----------|
 | `requestId` | `string` | Identificador do envio. Use nos logs para rastrear a entrega. |
-
----
 
 ## Erros
 

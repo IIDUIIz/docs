@@ -12,6 +12,7 @@
     "light": "/logo/light.svg",
     "dark": "/logo/dark.svg"
   },
+  "openapi": "https://api.hadem.chat/openapi.json",
   "navbar": {
     "links": [
       {
@@ -26,34 +27,56 @@
     }
   },
   "navigation": {
-    "groups": [
+    "tabs": [
       {
-        "group": "Introdução",
-        "pages": [
-          "index",
-          "introduction/faq",
-          "introduction/security"
+        "tab": "Documentação",
+        "groups": [
+          {
+            "group": "Introdução",
+            "pages": [
+              "index",
+              "introduction/faq",
+              "introduction/security"
+            ]
+          },
+          {
+            "group": "Guias",
+            "pages": [
+              "tasks/index"
+            ]
+          }
         ]
       },
       {
-        "group": "Canais",
-        "pages": [
-          "channels/index",
-          "channels/list",
-          "channels/update",
-          "channels/delete"
+        "tab": "Changelog",
+        "groups": [
+          {
+            "group": "Changelog",
+            "pages": [
+              "changelog"
+            ]
+          }
         ]
       },
       {
-        "group": "Mensagens",
-        "pages": [
-          "messages/send"
-        ]
-      },
-      {
-        "group": "Tasks",
-        "pages": [
-          "tasks/index"
+        "tab": "API Reference",
+        "groups": [
+          {
+            "group": "Canais",
+            "pages": [
+              "channels/index",
+              "channels/list",
+              "channels/update",
+              "channels/delete"
+            ]
+          },
+          {
+            "group": "Mensagens",
+            "pages": [
+              "messages/send",
+              "api-reference/messages/send"
+            ]
+          }
         ]
       }
     ]

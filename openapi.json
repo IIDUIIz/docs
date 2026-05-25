@@ -1,0 +1,272 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Hadem API",
+    "description": "API pública para envio de mensagens e automações via Hadem.",
+    "version": "1.0",
+    "contact": {}
+  },
+  "servers": [
+    {
+      "url": "https://api.hadem.io"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearer": {
+        "scheme": "bearer",
+        "bearerFormat": "token",
+        "type": "http"
+      }
+    },
+    "schemas": {
+      "ApiContactDto": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "description": "Identificador do contato (telefone ou e-mail)",
+            "example": "5511999999999"
+          },
+          "type": {
+            "type": "string",
+            "description": "Tipo do identificador do contato",
+            "enum": ["phone", "email"],
+            "example": "phone"
+          },
+          "name": {
+            "type": "string",
+            "description": "Nome do contato (exibido na conversa)",
+            "example": "João Silva"
+          }
+        },
+        "required": ["value"]
+      },
+      "ApiTextMessageDto": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "description": "Conteúdo da mensagem de texto",
+            "example": "Olá! Como posso te ajudar?"
+          },
+          "pushName": {
+            "type": "string",
+            "description": "Nome exibido como remetente da mensagem (push name)",
+            "example": "Suporte Hadem"
+          }
+        },
+        "required": ["value"]
+      },
+      "TemplateVariableOverrideDto": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": "Chave da variável no template",
+            "example": "name"
+          },
+          "correlationId": {
+            "type": "number",
+            "description": "ID de correlação numérico da variável",
+            "example": 1
+          },
+          "value": {
+            "type": "string",
+            "description": "Valor da variável",
+            "example": "João"
+          }
+        },
+        "required": ["value"]
+      },
+      "ApiTemplateMessageDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Nome do template de mensagem cadastrado no canal",
+            "example": "boas_vindas_v2"
+          },
+          "variables": {
+            "type": "array",
+            "description": "Sobrescrita de variáveis do template",
+            "items": {
+              "$ref": "#/components/schemas/TemplateVariableOverrideDto"
+            }
+          }
+        },
+        "required": ["name"]
+      },
+      "ApiMediaMessageDto": {
+        "type": "object",
+        "properties": {
+          "mimetype": {
+            "type": "string",
+            "description": "MIME type do arquivo",
+            "example": "image/jpeg"
+          },
+          "filename": {
+            "type": "string",
+            "description": "Nome do arquivo (exibido para o contato)",
+            "example": "fatura.pdf"
+          },
+          "caption": {
+            "type": "string",
+            "description": "Legenda exibida abaixo da mídia",
+            "example": "Segue sua fatura do mês de maio."
+          },
+          "base64": {
+            "type": "string",
+            "description": "Arquivo codificado em base64 (obrigatório se mediaUrl não for informado)",
+            "example": "/9j/4AAQSkZJRgABAQAA..."
+          },
+          "mediaUrl": {
+            "type": "string",
+            "description": "URL pública do arquivo (obrigatório se base64 não for informado)",
+            "example": "https://storage.example.com/files/fatura.pdf"
+          },
+          "mediaType": {
+            "type": "string",
+            "description": "Tipo de mídia (document, image, video, audio)",
+            "example": "document"
+          }
+        },
+        "required": ["mimetype"]
+      },
+      "ApiMessageDto": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Tipo da mensagem",
+            "enum": ["text", "template", "media"],
+            "example": "text"
+          },
+          "text": {
+            "description": "Conteúdo da mensagem de texto (obrigatório quando type = \"text\")",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApiTextMessageDto"
+              }
+            ]
+          },
+          "template": {
+            "description": "Dados do template (obrigatório quando type = \"template\")",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApiTemplateMessageDto"
+              }
+            ]
+          },
+          "media": {
+            "description": "Dados da mídia (obrigatório quando type = \"media\")",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApiMediaMessageDto"
+              }
+            ]
+          }
+        },
+        "required": ["type"]
+      },
+      "SendPublicApiMessageDto": {
+        "type": "object",
+        "properties": {
+          "channelId": {
+            "type": "string",
+            "description": "ID do canal pelo qual a mensagem será enviada",
+            "example": "ch_01abc123def456"
+          },
+          "contact": {
+            "description": "Destinatário da mensagem",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApiContactDto"
+              }
+            ]
+          },
+          "message": {
+            "description": "Conteúdo da mensagem a ser enviada",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApiMessageDto"
+              }
+            ]
+          },
+          "flowId": {
+            "type": "string",
+            "description": "ID do fluxo de automação a ser iniciado após o envio",
+            "example": "flow_01xyz789"
+          },
+          "closeConversation": {
+            "type": "boolean",
+            "description": "Se verdadeiro, encerra a conversa após o envio",
+            "example": false,
+            "default": false
+          }
+        },
+        "required": ["channelId", "contact", "message"]
+      }
+    }
+  },
+  "paths": {
+    "/v1/messages": {
+      "post": {
+        "operationId": "PublicApiChannelMessageController_sendMessage",
+        "summary": "Enviar mensagem",
+        "description": "Enfileira uma mensagem para envio pelo canal especificado. A requisição é processada de forma assíncrona — o `requestId` retornado pode ser usado para rastrear o status do envio.",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendPublicApiMessageDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Mensagem enfileirada com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "requestId": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Payload inválido."
+          },
+          "401": {
+            "description": "Token Bearer ausente ou inválido."
+          },
+          "403": {
+            "description": "Escopo messages:send não autorizado."
+          },
+          "404": {
+            "description": "Canal não encontrado."
+          },
+          "429": {
+            "description": "Rate limit atingido."
+          }
+        },
+        "tags": ["Mensagens"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    }
+  }
+}
