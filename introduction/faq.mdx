@@ -1,0 +1,28 @@
+---
+title: FAQ
+description: Dúvidas frequentes sobre autenticação e uso da API.
+---
+
+## Posso recuperar o token depois de criado?
+
+Não. O token completo é exibido apenas uma vez, no momento da criação. Se precisar de um novo, acesse **Settings → Developers** e rotacione o token — o anterior deixa de funcionar imediatamente.
+
+## O token dá acesso a todos os canais da conta?
+
+Sim. Um token autentica o app na sua conta e pode enviar mensagens por qualquer canal ativo da mesma conta.
+
+## Enviar a mesma requisição duas vezes envia duas mensagens?
+
+Sim. A API não faz deduplicação — cada requisição aceita gera um envio independente.
+
+## Como sei se a mensagem foi entregue?
+
+A resposta `202` confirma que a mensagem foi aceita. Para acompanhar a entrega, use os logs em **Settings → Developers**, onde você encontra o `requestId` de cada envio e o status final.
+
+## A API tem limite de requisições?
+
+Sim, existe um rate limit por app. Se atingir o limite, a API retorna `429 Too Many Requests`. Aguarde antes de tentar novamente.
+
+## A API de tasks já está disponível?
+
+Ainda não. A seção de tasks está reservada na documentação mas ainda não foi ativada.

@@ -1,0 +1,78 @@
+---
+title: Listar Canais
+description: Retorna todos os canais ativos da conta.
+---
+
+<Note>
+  **GET** `https://api.hadem.com.br/v1/channels`
+</Note>
+
+## Autenticação
+
+```bash
+Authorization: Bearer hm_live_xxxxxxxxxxxx
+```
+
+---
+
+## Exemplo
+
+<CodeGroup>
+
+```bash cURL
+curl "https://api.hadem.com.br/v1/channels" \
+  -H "Authorization: Bearer hm_live_xxxxxxxxxxxx"
+```
+
+```js JavaScript
+const res = await fetch("https://api.hadem.com.br/v1/channels", {
+  headers: {
+    Authorization: `Bearer ${process.env.HADEM_API_TOKEN}`,
+  },
+});
+
+const channels = await res.json();
+```
+
+```python Python
+import requests
+
+res = requests.get(
+    "https://api.hadem.com.br/v1/channels",
+    headers={"Authorization": f"Bearer {HADEM_API_TOKEN}"},
+)
+
+channels = res.json()
+```
+
+</CodeGroup>
+
+---
+
+## Resposta
+
+```json
+[
+  {
+    "id": "ch_123",
+    "name": "Suporte",
+    "type": "whatsapp",
+    "status": "active"
+  },
+  {
+    "id": "ch_456",
+    "name": "Vendas",
+    "type": "whatsapp",
+    "status": "active"
+  }
+]
+```
+
+---
+
+## Erros
+
+| Status | Descrição |
+|--------|-----------|
+| `401 Unauthorized` | Token ausente ou inválido |
+| `403 Forbidden` | Token sem permissão |

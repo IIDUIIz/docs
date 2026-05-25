@@ -1,0 +1,91 @@
+---
+title: Atualizar Canal
+description: Atualiza os dados de um canal da conta.
+---
+
+<Note>
+  **PATCH** `https://api.hadem.com.br/v1/channels/:id`
+</Note>
+
+## Autenticação
+
+```bash
+Authorization: Bearer hm_live_xxxxxxxxxxxx
+```
+
+---
+
+## Exemplo
+
+<CodeGroup>
+
+```bash cURL
+curl -X PATCH "https://api.hadem.com.br/v1/channels/ch_123" \
+  -H "Authorization: Bearer hm_live_xxxxxxxxxxxx" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Suporte Premium"
+  }'
+```
+
+```js JavaScript
+const res = await fetch("https://api.hadem.com.br/v1/channels/ch_123", {
+  method: "PATCH",
+  headers: {
+    Authorization: `Bearer ${process.env.HADEM_API_TOKEN}`,
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({ name: "Suporte Premium" }),
+});
+
+const channel = await res.json();
+```
+
+```python Python
+import requests
+
+res = requests.patch(
+    "https://api.hadem.com.br/v1/channels/ch_123",
+    headers={
+        "Authorization": f"Bearer {HADEM_API_TOKEN}",
+        "Content-Type": "application/json",
+    },
+    json={"name": "Suporte Premium"},
+)
+
+channel = res.json()
+```
+
+</CodeGroup>
+
+---
+
+## Parâmetros
+
+| Campo | Tipo | Descrição |
+|-------|------|-----------|
+| `name` | `string` | Novo nome do canal |
+
+---
+
+## Resposta
+
+```json
+{
+  "id": "ch_123",
+  "name": "Suporte Premium",
+  "type": "whatsapp",
+  "status": "active"
+}
+```
+
+---
+
+## Erros
+
+| Status | Descrição |
+|--------|-----------|
+| `400 Bad Request` | Body inválido |
+| `401 Unauthorized` | Token ausente ou inválido |
+| `403 Forbidden` | Token sem permissão |
+| `404 Not Found` | Canal não encontrado |

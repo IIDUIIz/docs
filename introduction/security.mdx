@@ -1,0 +1,24 @@
+---
+title: Segurança
+description: Boas práticas para proteger o token e as integrações com a API do Hadem.
+---
+
+## Proteja o token
+
+Trate o token como uma senha.
+
+- Nunca exponha o token no frontend ou em código público
+- Não suba tokens em repositórios — use variáveis de ambiente
+- Se suspeitar que o token foi comprometido, rotacione imediatamente em **Settings → Developers**
+
+## Use sempre HTTPS
+
+Todas as requisições devem ser feitas via HTTPS. Requisições em HTTP não são aceitas.
+
+## Armazene o `requestId`
+
+Guarde o `requestId` retornado em cada envio. Ele é a referência para rastrear a mensagem nos logs e acionar suporte se necessário.
+
+## Integração server-to-server
+
+A API foi feita para ser chamada a partir do seu backend, nunca diretamente do browser. Mantenha o token no servidor e faça as chamadas a partir dele.

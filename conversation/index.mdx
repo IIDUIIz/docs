@@ -1,0 +1,16 @@
+---
+title: Mensagens
+description: Envie mensagens para seus contatos via API.
+---
+
+## Endpoints disponíveis
+
+| Método | Path | Descrição |
+|--------|------|-----------|
+| `POST` | `/v1/channels/:channelId/messages` | [Enviar mensagem](/conversation/send-message) |
+
+## Como funciona
+
+Você escolhe o canal pelo qual a mensagem vai sair (`channelId`) e define o contato de destino e o conteúdo da mensagem no body. A API retorna um `requestId` que identifica o envio nos logs.
+
+Os tipos de mensagem suportados são: texto simples, template e mídia (imagem, vídeo, documento, áudio).

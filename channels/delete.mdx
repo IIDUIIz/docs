@@ -1,0 +1,61 @@
+---
+title: Deletar Canal
+description: Remove um canal da conta permanentemente.
+---
+
+<Note>
+  **DELETE** `https://api.hadem.com.br/v1/channels/:id`
+</Note>
+
+## Autenticação
+
+```bash
+Authorization: Bearer hm_live_xxxxxxxxxxxx
+```
+
+---
+
+## Exemplo
+
+<CodeGroup>
+
+```bash cURL
+curl -X DELETE "https://api.hadem.com.br/v1/channels/ch_123" \
+  -H "Authorization: Bearer hm_live_xxxxxxxxxxxx"
+```
+
+```js JavaScript
+await fetch("https://api.hadem.com.br/v1/channels/ch_123", {
+  method: "DELETE",
+  headers: {
+    Authorization: `Bearer ${process.env.HADEM_API_TOKEN}`,
+  },
+});
+```
+
+```python Python
+import requests
+
+requests.delete(
+    "https://api.hadem.com.br/v1/channels/ch_123",
+    headers={"Authorization": f"Bearer {HADEM_API_TOKEN}"},
+)
+```
+
+</CodeGroup>
+
+---
+
+## Resposta
+
+Retorna `204 No Content` sem body.
+
+---
+
+## Erros
+
+| Status | Descrição |
+|--------|-----------|
+| `401 Unauthorized` | Token ausente ou inválido |
+| `403 Forbidden` | Token sem permissão |
+| `404 Not Found` | Canal não encontrado |
