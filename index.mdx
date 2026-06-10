@@ -26,10 +26,11 @@ Authorization: Bearer hm_live_xxxxxxxxxxxx
 ## 3. Faça sua primeira chamada
 
 ```bash
-curl -X POST "https://api.hadem.com.br/v1/channels/SEU_CHANNEL_ID/messages" \
+curl -X POST "https://api.hadem.chat/v1/messages" \
   -H "Authorization: Bearer hm_live_xxxxxxxxxxxx" \
   -H "Content-Type: application/json" \
   -d '{
+    "channelId": "SEU_CHANNEL_ID",
     "contact": { "value": "5511999999999", "type": "phone" },
     "message": {
       "type": "text",
@@ -42,4 +43,4 @@ Uma resposta `202` confirma que a mensagem foi aceita e será entregue.
 
 ## Próximo passo
 
-Veja todos os tipos de mensagem suportados em [Send Message](/conversation/send-message).
+Veja todos os endpoints e schemas disponíveis na aba **API Reference**.
