@@ -12,7 +12,6 @@
     "light": "/logo/light.svg",
     "dark": "/logo/dark.svg"
   },
-  "openapi": "https://api.hadem.chat/openapi.json",
   "navbar": {
     "links": [
       {
@@ -60,24 +59,7 @@
       },
       {
         "tab": "API Reference",
-        "groups": [
-          {
-            "group": "Canais",
-            "pages": [
-              "channels/index",
-              "channels/list",
-              "channels/update",
-              "channels/delete"
-            ]
-          },
-          {
-            "group": "Mensagens",
-            "pages": [
-              "messages/send",
-              "api-reference/messages/send"
-            ]
-          }
-        ]
+        "openapi": "https://api.hadem.chat/documentation/public-json"
       }
     ]
   },
