@@ -1,0 +1,21 @@
+schema: 1
+story: "1.9"
+gate: CONCERNS
+status_reason: "Gate em lote: código no remoto, 5 de 5 testes da File List verdes e suítes gerais verdes. Sem revisão linha a linha, por isso o teto é CONCERNS."
+reviewer: "Quinn (@qa), lote"
+updated: "2026-11-03T02:00:00Z"
+mode: batch
+top_issues:
+  - id: "BATCH-001"
+    severity: medium
+    finding: "Gate em lote pedido pelo owner: sem revisão linha a linha nem conferência critério a critério."
+    suggested_action: "Se esta story for de risco para o release, pedir gate individual."
+  - id: "VER-001"
+    severity: low
+    finding: "Não verificado no app neste gate."
+    suggested_action: "Conferir no app o que for crítico."
+waiver: { active: false }
+evidence:
+  basis: "Back d8ae7452 e front 069c6de, com catálogo e estoque ainda sem commit na árvore. Back: jest 5.015 de 5.027 verdes, 12 ignorados, 11 suítes de integração ignoradas por não terem Mongo; executeScript.spec falha no Windows por binário nativo ausente de isolated-vm e passa no container (5 de 5). tsc limpo. Front: vitest 985 verdes, depois de repetir sozinhos 5 arquivos que falharam sob carga (83 de 83). tsc limpo. Lint sem erro nos dois, só src no back."
+  owner_decision: "Gate em lote, escolhido pelo owner em 02/11 para fechar as stories já entregues."
+  story_tests: "5 de 5 testes da File List verdes"
