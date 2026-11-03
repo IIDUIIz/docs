@@ -7,6 +7,77 @@ de schema ou migração executada. As revisões não constituem QA de uma implem
 Base: [investigação inicial](project-analysis.md) e [abordagem de entrega](recommended-approach.md).
 Este documento substitui a sugestão inicial de colocar o endereço diretamente no Contact legado.
 
+## 0. Decisões do owner (27/10/2026 e 30/10/2026)
+
+Prevalecem sobre o restante do documento onde houver conflito. Base: comparação com CRMs de
+mercado (Kommo, Pipedrive, HubSpot: contato = pessoa, duplicado resolvido com merge destrutivo;
+Zendesk, Chatwoot: pessoa com várias identidades). Escolha: armazenamento no estilo pessoa +
+identidades (preserva os Contact IDs) com experiência de uso centrada na pessoa, como no mercado.
+
+1. **Nome:** a ficha se chama `Person` (coleção `people`, "Pessoa" na interface). O vínculo é
+   `Contact.personId` com `personLinkVersion`. Substitui `ContactProfile`/`contactProfileId` em
+   todo o documento. "Customer" e "ContactList" foram descartados (Customer sugere comprador e
+   colide com o legado; ContactList já é a lista de transmissão).
+2. **Toda pessoa nasce automaticamente:** cada Contact novo ganha sua `Person` (1:1), e os
+   Contacts existentes são migrados 1:1. A criação continua aditiva: falha ao criar a pessoa não
+   impede receber ou enviar mensagem (seção 7); a reconciliação completa depois.
+3. **Vincular = juntar pessoas:** os Contacts da pessoa B passam para a pessoa A, com prévia e
+   escolha campo a campo nos conflitos (nome, email, endereço). B fica arquivada com
+   `mergedInto`/`mergedAt`, nunca apagada, para permitir desfazer. Sem merge automático.
+4. **Desvincular é permitido:** o Contact ganha uma pessoa nova (ou volta para a de origem quando
+   for desfazer de uma junção registrada).
+5. **Pessoa sem meio de contato é permitida** (cadastro manual só com nome).
+6. **Negócio aponta para a pessoa:** `Card.personId`, preenchido na migração a partir de
+   `Card.contactId`. `contactId` continua como meio usado na origem do negócio.
+7. **Empresa/organização fica fora:** `Organization` opcional acima de `Person` só com demanda B2B.
+
+Fases acordadas:
+
+- **Fase 0 (feita em 27/10, sem push):** remover o `customerId` morto (back `3aad2c36`, front
+  `71be857`, incluindo o filtro "Cliente" do monitoramento que dava 400). A suspeita de
+  `Contact.value` com `+` não se confirmou: no dev, 0 de 132 contatos de telefone têm `+`; só o
+  comentário do schema estava errado. Fica em aberto: `conversation.customerId` no front e o
+  painel RBX que depende dele, colunas customer do CSV, e `tenant-sync` que não apaga a coleção
+  legada `customers` na exclusão de tenant.
+- **Fase 1 (MVP):** `Person`, `Contact.personId`, migração 1:1, `Card.personId`, juntar e
+  desvincular com prévia, tela da pessoa com meios e negócios.
+- **Fase 2:** linha do tempo única das conversas, sugestão de duplicados (número com e sem o 9,
+  mesmo email), automação procurando negócio pela pessoa, campos custom "da pessoa" saindo de
+  `Variable` para `Person`.
+- **Fase 3:** `Organization`, se houver demanda.
+
+8. **Permissões (27/10, revisado em 30/10; item 1 da seção 14):** pessoa tem permissões
+   próprias, separadas das de contato. Ver a pessoa: `crm:operate`, `conversation:attend` ou
+   `people:manage`. Criar/editar: `people:manage`. Juntar/desvincular/desfazer: `people:merge`.
+   As duas novas vão para Dono e Gerente. `contacts:manage`/`contacts:merge` não valem para pessoa.
+9. **Máscara na tela da pessoa (30/10):** quem tem `people:manage` vê telefone, email e endereço
+   completos (a rota define o contexto, como o monitoramento da 25.13). Os demais seguem a regra
+   "contexto sem equipe" do tenant (padrão oculto). Negócios seguem a regra de cada card.
+10. **Endereço (30/10):** mesma regra de telefone e email: entra na política de dado por nível da
+    equipe e na regra "contexto sem equipe".
+11. **Reconciliação (30/10):** contato que ficou sem pessoa é corrigido por rotina diária, além do
+    script manual.
+12. **Negócios só dos funis que o usuário vê (30/10, Q2 da 30.5):** a busca de negócios por contato
+    e por pessoa segue a mesma regra do quadro do CRM (funil sem equipe ou da equipe do usuário;
+    `crm:monitor` vê todos). Hoje `GET /pipelines/cards` não aplica o escopo de equipe do funil; a
+    correção é uma story própria do back, que vale também para a aba Negócio e o passo "E o
+    negócio?" do atendimento.
+    **Exceção do responsável (owner, 30/10):** o responsável (`ownerId`) sempre vê e opera o
+    próprio negócio, mesmo num funil que ele não vê, por exemplo quando a equipe do funil mudou ou
+    quando ele virou responsável ao assumir a conversa. O quadro do CRM continua mostrando só os
+    funis visíveis. O negócio aparece onde a busca é por contato, pessoa ou responsável: na aba
+    Negócio, no passo "E o negócio?" e na tela da pessoa. O contato dentro desse negócio continua
+    seguindo a política de dado da equipe do funil e pode vir oculto (owner, 31/10).
+
+13. **Troca de titularidade de número (owner, 31/10; item 3 da seção 14):** fica para depois. Vale
+    o limite da seção 6.2: não se passa um meio de uma pessoa para outra, só se desvincula.
+14. **Riscos aceitos (owner, 31/10):** o nome da pessoa aparece sem máscara (inclusive se alguém
+    digitar telefone ou email no nome), e a busca parcial pelo valor real (D7) deixa quem não tem
+    permissão confirmar, por tentativa, um telefone ou email oculto, como a busca de contato do CRM
+    já fazia.
+
+Stories: back epic 30, front epic 24.
+
 ## 1. Decisão do owner e significado das entidades
 
 Em 26/10/2026, perguntado se a mesma pessoa deveria ter uma ficha reunindo telefone, e-mail e
@@ -402,11 +473,12 @@ Testes necessários para o modelo novo:
 
 ## 14. Decisões pendentes para refinamento
 
-1. Quais perfis consultam/editam cadastro e quem consulta histórico consolidado? Sem grants presumidos.
-2. Como o operador confirma associação de meios já existentes e resolve nome/endereço conflitantes?
-   Recomendação: prévia explícita e operação compensável, sem merge automático.
-3. Troca de titularidade de número entra nesta entrega? Se entrar, escolher modelagem temporal antes do código.
-4. Criar ficha manual sem telefone/e-mail é permitido? Separar isso de ficha órfã de provisionamento.
+1. ~~Quais perfis consultam/editam cadastro e quem consulta histórico consolidado?~~ Decidido em 30/10 (seção 0, itens 8 e 9). O histórico consolidado segue fora da fase 1.
+2. ~~Como o operador confirma associação de meios já existentes e resolve nome/endereço conflitantes?~~
+   Decidido em 27/10 (seção 0, item 3): prévia, escolha campo a campo, pessoa de origem arquivada com `mergedInto`.
+3. ~~Troca de titularidade de número entra nesta entrega?~~ Decidido em 31/10 (seção 0, item 13): fica para depois; vale o limite da seção 6.2.
+4. ~~Criar ficha manual sem telefone/e-mail é permitido?~~ Decidido em 27/10 (seção 0, item 5): sim.
+   Continua valendo separar isso de ficha órfã de provisionamento.
 
 A decisão central de pessoa com vários meios já está fechada. Os itens acima não invalidam o
 modelo lógico B; delimitam os casos de uso que ainda precisam de contrato antes de implementação.
