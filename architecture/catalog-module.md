@@ -135,6 +135,8 @@ Uma alternativa menor é pin permanente ao compartilhar foto entre dois produtos
 
 O usuário autorizou exclusão física de produto. Endpoint `DELETE /settings/catalog/products/:id` usa `catalog:manage` e tenant do servidor. Retorna 404 para produto inexistente e 409 com código `CATALOG_PRODUCT_IN_USE` quando coleção ou fluxo com seleção direta referencia o produto. Não alterar coleções/flows automaticamente nem excluir suas referências. Considerar todos os fluxos persistidos, inclusive inativos e rascunhos; seleção dinâmica é protegida pela associação na coleção.
 
+> **Superado (nota de 08/11/2026):** consultar a coleção `flows` do automation por `Connection` contraria a ADR-010, D7 (`back-end/docs/architecture/adr-010-ddd-estrutura-dos-modulos.md`) e está na tabela de débito dela, item 1c. O parágrafo abaixo fica como histórico; não usar como padrão.
+
 Usar adapter de referências no módulo catálogo, injetando `Connection` Mongo, para consultar coleção e `flows` sem import circular de AutomationModule. Nome de coleção deve vir dos schemas/modelos conhecidos, nunca de entrada do cliente. Buscar tenant e `productIds` somente nos campos efetivos da ação `showProducts`; evitar busca textual no JSON e falso bloqueio por metadados arbitrários. A coleção nomeada deve usar seu contrato real de membership. Repository de produtos permanece responsável pelo delete tenant-scoped.
 
 Persistir exclusão do produto antes de liberar ownership de suas fotos; cleanup segue o claim protegido já descrito. Histórico de mensagens fica intacto, e fotos pinned permanecem. Se houver itens de negócios que dependam do identificador, preservar snapshot e revisar requisito antes de remover referência; não criar cascade comercial implícita.

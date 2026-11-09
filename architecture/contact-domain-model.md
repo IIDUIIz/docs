@@ -18,17 +18,26 @@ identidades (preserva os Contact IDs) com experiência de uso centrada na pessoa
    `Contact.personId` com `personLinkVersion`. Substitui `ContactProfile`/`contactProfileId` em
    todo o documento. "Customer" e "ContactList" foram descartados (Customer sugere comprador e
    colide com o legado; ContactList já é a lista de transmissão).
-2. **Toda pessoa nasce automaticamente:** cada Contact novo ganha sua `Person` (1:1), e os
-   Contacts existentes são migrados 1:1. A criação continua aditiva: falha ao criar a pessoa não
-   impede receber ou enviar mensagem (seção 7); a reconciliação completa depois.
-3. **Vincular = juntar pessoas:** os Contacts da pessoa B passam para a pessoa A, com prévia e
-   escolha campo a campo nos conflitos (nome, email, endereço). B fica arquivada com
-   `mergedInto`/`mergedAt`, nunca apagada, para permitir desfazer. Sem merge automático.
-4. **Desvincular é permitido:** o Contact ganha uma pessoa nova (ou volta para a de origem quando
-   for desfazer de uma junção registrada).
+2. **Pessoa só sob demanda (owner, 03/11):** "quando eu disse que queria 1 por contato? é
+   JUSTAMENTE oque eu n quero! quero só sob demanda!". Contact pode ficar sem `Person`; não há
+   criação automática nem migração 1:1. **Correção:** este item dizia que toda pessoa nascia
+   automaticamente, 1:1, como decisão do owner de 27/10. O owner nega, e a conversa de 27/10 não
+   está mais em disco. O 1:1 foi implementado na fase 1 (epic 30) e não chegou a produção. Saiu
+   na story `fix.pessoa-sob-demanda` (back e front, 04/11). A pessoa nasce de dado real: à mão, com
+   o botão "Criar pessoa com este contato" ou, no futuro, de site ou LP. As seções abaixo que falam
+   em ficha 1:1 e provisionamento são a análise de 26/10 e não valem mais nesse ponto.
+3. **Colocar contato em pessoa e juntar pessoas (revisto em 04/11):** contato sem pessoa entra numa
+   pessoa e, se os nomes divergem, o usuário escolhe manter o da pessoa ou usar o do contato. Juntar
+   pessoas: os Contacts da pessoa B passam para a pessoa A, com prévia e escolha campo a campo nos
+   conflitos (nome, email, endereço). B fica arquivada com `mergedInto`/`mergedAt`, nunca apagada,
+   para permitir desfazer. Não existe juntar contato com contato: cria-se a pessoa com o primeiro e
+   adiciona-se o segundo. Sem merge automático.
+4. **Desvincular é permitido (revisto em 04/11):** o Contact fica sem pessoa, inclusive o único meio
+   da pessoa, que pode ficar sem contato (ou volta para a de origem quando for desfazer de uma
+   junção registrada).
 5. **Pessoa sem meio de contato é permitida** (cadastro manual só com nome).
-6. **Negócio aponta para a pessoa:** `Card.personId`, preenchido na migração a partir de
-   `Card.contactId`. `contactId` continua como meio usado na origem do negócio.
+6. **Negócio aponta para a pessoa:** `Card.personId`, derivado do contato (`null` quando o contato
+   não tem pessoa; sem migração). `contactId` continua como meio usado na origem do negócio.
 7. **Empresa/organização fica fora:** `Organization` opcional acima de `Person` só com demanda B2B.
 
 Fases acordadas:
@@ -39,8 +48,8 @@ Fases acordadas:
   comentário do schema estava errado. Fica em aberto: `conversation.customerId` no front e o
   painel RBX que depende dele, colunas customer do CSV, e `tenant-sync` que não apaga a coleção
   legada `customers` na exclusão de tenant.
-- **Fase 1 (MVP):** `Person`, `Contact.personId`, migração 1:1, `Card.personId`, juntar e
-  desvincular com prévia, tela da pessoa com meios e negócios.
+- **Fase 1 (MVP):** `Person`, `Contact.personId`, `Card.personId`, pessoa sob demanda, colocar
+  contato em pessoa, juntar e desvincular com prévia, tela da pessoa com meios e negócios.
 - **Fase 2:** linha do tempo única das conversas, sugestão de duplicados (número com e sem o 9,
   mesmo email), automação procurando negócio pela pessoa, campos custom "da pessoa" saindo de
   `Variable` para `Person`.
@@ -55,8 +64,8 @@ Fases acordadas:
    "contexto sem equipe" do tenant (padrão oculto). Negócios seguem a regra de cada card.
 10. **Endereço (30/10):** mesma regra de telefone e email: entra na política de dado por nível da
     equipe e na regra "contexto sem equipe".
-11. **Reconciliação (30/10):** contato que ficou sem pessoa é corrigido por rotina diária, além do
-    script manual.
+11. **Reconciliação (revista em 04/11):** não existe. Contato sem pessoa é estado normal. Sem rotina
+    agendada, auto-cura nem comando; `people:backfill` e `cards:backfill-person` foram removidos.
 12. **Negócios só dos funis que o usuário vê (30/10, Q2 da 30.5):** a busca de negócios por contato
     e por pessoa segue a mesma regra do quadro do CRM (funil sem equipe ou da equipe do usuário;
     `crm:monitor` vê todos). Hoje `GET /pipelines/cards` não aplica o escopo de equipe do funil; a
