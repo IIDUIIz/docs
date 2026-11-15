@@ -43,6 +43,12 @@
             "pages": [
               "tasks/index"
             ]
+          },
+          {
+            "group": "Fretes",
+            "pages": [
+              "shipping/rodonaves"
+            ]
           }
         ]
       },

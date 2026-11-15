@@ -1,0 +1,86 @@
+---
+title: Conectar a Rodonaves
+description: Como pedir o acesso à Rodonaves e configurar a cotação de frete no Hadem.
+---
+
+<Info>
+  A cotação de frete pela Rodonaves está em desenvolvimento e ainda não aparece no painel. Este guia descreve como vai funcionar; o passo 1 (pedir o acesso à Rodonaves) já pode ser feito.
+</Info>
+
+Com a Rodonaves conectada, o atendente calcula o frete rodoviário dentro do negócio e da conversa, junto das outras transportadoras que você usa.
+
+## O que você precisa
+
+- Ser cliente da Rodonaves, com uma unidade que atende sua empresa.
+- **Usuário e senha de API** da Rodonaves. Não são o login do portal da Rodonaves: são um acesso separado, enviado por e-mail pela unidade.
+- No Hadem, a permissão de gerenciar integrações.
+
+## Passo a passo
+
+<Steps>
+  <Step title="Peça o acesso de API à sua unidade da Rodonaves">
+    Quem libera o acesso é a unidade da Rodonaves que atende sua empresa. Se você não sabe qual é, consulte a lista de unidades no site da Rodonaves, por estado e cidade.
+
+    Envie para a unidade:
+
+    - Razão social e CNPJ da empresa.
+    - Tipo de integração: **API**.
+    - Recursos: **Cotação** e **Correios** (é o recurso que encontra a cidade pelo CEP).
+    - Nome e e-mail de quem cuida da integração.
+
+    A unidade analisa o pedido e envia o usuário e a senha de API por e-mail.
+  </Step>
+  <Step title="Configure o envio">
+    No Hadem, abra **Configurações › Integrações** e, na seção **Fretes**, clique em **Configurar envio**. Informe o CEP de origem e o pacote padrão (peso e medidas). Isso vale para todas as transportadoras.
+  </Step>
+  <Step title="Configure a Rodonaves">
+    Na mesma seção, no cartão **Rodonaves**, clique em **Configurar** e preencha:
+
+    | Campo | O que informar |
+    |---|---|
+    | Usuário de API | O usuário enviado pela unidade |
+    | Senha de API | A senha enviada pela unidade |
+    | CPF ou CNPJ da empresa | O documento da sua empresa cadastrado na Rodonaves |
+    | Nome do contato | Nome de uma pessoa da sua empresa |
+    | Telefone do contato | Telefone dessa pessoa |
+
+    Salve. A senha fica guardada cifrada e não é mostrada de novo; para trocar, basta digitar a nova.
+  </Step>
+  <Step title="Teste a conexão">
+    No cartão da Rodonaves, clique em **Testar**. O teste confere usuário e senha; ele não gera cotação.
+  </Step>
+  <Step title="Ligue a integração">
+    Ligue a chave do cartão. A partir daí o frete da Rodonaves aparece para os atendentes.
+  </Step>
+</Steps>
+
+## Como o atendente usa
+
+No negócio (CRM) ou na aba **Negócio** da conversa, no bloco **Frete**:
+
+1. Confere peso e medidas do pacote.
+2. Informa o **CEP de entrega** e o **CPF ou CNPJ do cliente**.
+3. Clica em **Calcular**.
+
+A opção da Rodonaves aparece na lista como **Rodoviário**, com o preço. A Rodonaves não informa o prazo na cotação, então a opção mostra **prazo a confirmar**.
+
+<Note>
+  A Rodonaves exige o valor da mercadoria. O Hadem envia o **valor do negócio**. Negócio sem valor não é cotado pela Rodonaves: preencha o valor ou adicione os produtos antes de calcular.
+</Note>
+
+## Bom saber
+
+- **Cada cálculo gera um protocolo de cotação na Rodonaves.** A Rodonaves não tem ambiente de teste: toda cotação é real.
+- **O CPF ou CNPJ do cliente é enviado à Rodonaves** em cada cotação, porque ela exige o documento de quem recebe.
+- **Perdeu ou quer trocar a senha de API?** Peça à mesma unidade da Rodonaves e atualize em **Configurar**.
+
+## Problemas comuns
+
+| O que aparece | Causa provável | O que fazer |
+|---|---|---|
+| Acesso recusado por Rodonaves | Usuário ou senha de API errados, login do portal usado no lugar do acesso de API, ou recurso não liberado | Confira os dados em **Configurar**. Se estiverem certos, peça à unidade a liberação de **Cotação** e **Correios** |
+| Rodonaves fora do ar agora | A Rodonaves não respondeu | Tente de novo em instantes |
+| Falta configurar o acesso | Algum campo da configuração está vazio | Abra **Configurar** e preencha os campos |
+| Informe o valor do negócio | O negócio está sem valor | Preencha o valor ou adicione produtos |
+| Informe o CPF ou CNPJ do cliente | O campo do documento está vazio | Preencha o documento do cliente no bloco Frete |
+| Rodonaves recusou a consulta | CEP, peso ou medidas que a Rodonaves não atende | Confira o CEP de entrega e o pacote |
