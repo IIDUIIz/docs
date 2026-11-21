@@ -10,7 +10,7 @@ A recomendação anterior de ampliar o Contact legado diretamente ficou superada
 
 ## Recomendação
 
-Criar **Contatos** como módulo funcional do Hadem, com entrada própria e rotas
+Criar **Contatos** como módulo funcional da Ethalia, com entrada própria e rotas
 `/dashboard/contacts` e `/dashboard/contacts/[contactProfileId]`.
 O histórico atual vira uma seção da ficha. A URL antiga precisa resolver o Contact ID operacional
 para o novo ID da ficha antes do redirecionamento, preservando a seção de conversas e links.

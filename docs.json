@@ -1,7 +1,7 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Hadem Developers",
+  "name": "Ethalia Developers",
   "colors": {
     "primary": "#0F8B6E",
     "light": "#12A882",
@@ -16,13 +16,13 @@
     "links": [
       {
         "label": "Suporte",
-        "href": "mailto:suporte@hadem.com.br"
+        "href": "mailto:suporte@ethalia.com.br"
       }
     ],
     "primary": {
       "type": "button",
       "label": "Ir para o painel",
-      "href": "https://app.hadem.com.br/login"
+      "href": "https://app.ethalia.com.br/login"
     }
   },
   "navigation": {
@@ -59,7 +59,7 @@
       },
       {
         "tab": "API Reference",
-        "openapi": "https://api.hadem.chat/documentation/public-json"
+        "openapi": "https://api.ethalia.com.br/documentation/public-json"
       }
     ]
   },
