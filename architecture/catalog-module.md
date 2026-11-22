@@ -20,9 +20,9 @@ Evidências verificadas: `back-end/src/shared/storage/application/file.service.t
 
 ## Requisitos confirmados
 
-- Cadastro de produtos pelo Hadem em `/dashboard/settings/`.
+- Cadastro de produtos pela Ethalia em `/dashboard/settings/`.
 - Produtos compartilhados entre conversas, automações e funil.
-- Cadastro e sincronização de produtos na Meta pelo Hadem.
+- Cadastro e sincronização de produtos na Meta pela Ethalia.
 - Uso do catálogo nativo WhatsApp quando o canal oficial permitir.
 - Produtos vinculados ao negócio com quantidade e preço.
 - `card.value` corresponde à soma dos itens do negócio.

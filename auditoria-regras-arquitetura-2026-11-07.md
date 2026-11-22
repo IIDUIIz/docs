@@ -1,4 +1,4 @@
-# Auditoria das regras de arquitetura do Hadem — 07/11/2026
+# Auditoria das regras de arquitetura da Ethalia — 07/11/2026
 
 Só leitura. Nenhuma regra, ADR, story ou código foi editado. Este arquivo é o único produto.
 
@@ -113,11 +113,11 @@ Gravidade: **A** = manda fazer o oposto da regra; **B** = descreve a prática co
 ### 3.3 Raiz: `CLAUDE.md` e `AGENTS.md` não descrevem o projeto
 
 - `CLAUDE.md` (64 linhas): guia genérico de comportamento, sem arquitetura.
-- `AGENTS.md:23-31` ("Project Map": `bin/`, `packages/`, `tests/`) e `:36-41` (`npm run sync:ide`, `validate:structure`…): descrevem o framework AIOX; essas pastas e scripts não existem na raiz do Hadem (sem `package.json`).
+- `AGENTS.md:23-31` ("Project Map": `bin/`, `packages/`, `tests/`) e `:36-41` (`npm run sync:ide`, `validate:structure`…): descrevem o framework AIOX; essas pastas e scripts não existem na raiz da Ethalia (sem `package.json`).
 
 ### 3.4 Rules copiadas da raiz para os repos
 
-- Dez rules são **idênticas** na raiz e nos 5 repos: `agent-handoff`, `agent-memory-imports`, `coderabbit-integration`, `handoff-consolidation`, `ids-principles`, `mcp-usage`, `story-lifecycle`, `tool-examples`, `tool-response-filtering`, `workflow-execution`. `agent-authority.md` difere só por uma nota de 16.4 (l.3-4) nos 5 repos. Nenhuma é de arquitetura do Hadem.
+- Dez rules são **idênticas** na raiz e nos 5 repos: `agent-handoff`, `agent-memory-imports`, `coderabbit-integration`, `handoff-consolidation`, `ids-principles`, `mcp-usage`, `story-lifecycle`, `tool-examples`, `tool-response-filtering`, `workflow-execution`. `agent-authority.md` difere só por uma nota de 16.4 (l.3-4) nos 5 repos. Nenhuma é de arquitetura da Ethalia.
 - `story-lifecycle.md` (checklist de 10 pontos do @po e 7 verificações do @qa) **não tem item de DDD, fronteira de módulo, transação ou acoplamento**, embora `adr-010:109` diga que "revisão de código e gate de QA recusam o que estiver fora". O gate prometido não está no checklist.
 - Só o `back-end` tem `ddd-modulos.md` e `observability-structure.md`. O `hadem-admin-api` (NestJS, `src/modules/{billing,tenants,…}`) não tem rule de estrutura, e seus módulos misturam `infra/` e `infrastructure/` (ex.: `hadem-admin-api/src/modules/billing/`, `…/tenants/`), contra o espírito de `adr-010:64`.
 - Não há lint, `dependency-cruiser`, `eslint-plugin-boundaries` ou `no-restricted-paths` no back (busca em `package.json` e configs sem resultado). Existe `back-end/test/module-graph/`, mas nada o liga à regra.
@@ -138,7 +138,7 @@ Processo: a página "6. Decisões e ADRs" do Notion diz que "ADR aceita não é 
 - `docs/architecture/contact-domain-model.md:3-5`: "proposta de modelagem; não há alteração de schema" — as stories 30.x já foram implementadas; segue como "fonte única" do epic 30 (`:4`). `:325-328` oferece "transação" como opção (superada).
 - `epic-30:4` chama esse arquivo de "monorepo `Hadem`", mas `back-end/README.md:7-11` diz que o monorepo foi arquivado. Na prática o arquivo está em `docs/architecture/` na raiz, num repo próprio (`github.com/IIDUIIz/docs`). Desenhos de módulos do back vivem fora do repo do back.
 - `back-end/docs/conversation-module-reorganization.md:140-197`: "documento vivo" com fases 2-4 planejadas, em paralelo à tabela de débito da ADR-010; duas listas de "o que falta arrumar".
-- `back-end/.claude/skills/architect-first/SKILL.md:25, 93, 163`: "Zero Coupling" para expansion packs do AIOX, não para módulos Nest; pode ser lido pelo @architect como regra do Hadem.
+- `back-end/.claude/skills/architect-first/SKILL.md:25, 93, 163`: "Zero Coupling" para expansion packs do AIOX, não para módulos Nest; pode ser lido pelo @architect como regra da Ethalia.
 - `front-end/DECISIONS.md` só tem ADR de i18n; `hadem-kit/CLAUDE.md` é só UI. Os repos de front não têm regra de módulo que contradiga o back.
 
 ## 4. Lacunas (o que deveria estar escrito e não está)
@@ -163,7 +163,7 @@ O princípio e os três mecanismos já estão na ADR e na regra (seção 1). Fal
 |---|---|
 | `adr-010-…md` | Decidir Query (Questão nova); nota em `:102` sobre o exemplo `PersonCardsPort`; incluir Team/Channel/Broadcast/Contact no débito ou dizer que não são contextos separados; dizer que D1 (`infra`) vale só em `src/modules` |
 | `ddd-modulos.md` | Mesmo ajuste de exemplo (`:49`); linha sobre Query; ampliar `paths:` para `docs/stories/**` e `docs/architecture/**` (ou rule curta sem `paths` que mande ler esta) |
-| `back-end/.claude/CLAUDE.md` | Bloco "Arquitetura do Hadem" **fora dos marcadores** `AIOX-MANAGED` (5 linhas + link para a rule e a ADR); incluir as 5 rules ausentes na tabela (`:138-147`), também fora do bloco gerenciado |
+| `back-end/.claude/CLAUDE.md` | Bloco "Arquitetura da Ethalia" **fora dos marcadores** `AIOX-MANAGED` (5 linhas + link para a rule e a ADR); incluir as 5 rules ausentes na tabela (`:138-147`), também fora do bloco gerenciado |
 | `back-end/README.md:50` | Apontar para `docs/architecture/` e a rule |
 | `epic-30-…md:33-34, 39, 79` | Nota datada de **superação** de P1, P2, P7 e do trecho de `:79` citando ADR-010 D5/D7; manter o texto original |
 | `30.4`, `30.7`, `30.8`, `30.9` | Nota curta no topo: transação entre módulos é débito (`adr-010:140`) |

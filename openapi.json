@@ -1,14 +1,14 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "Hadem API",
-    "description": "API pública para envio de mensagens e automações via Hadem.",
+    "title": "Ethalia API",
+    "description": "API pública para envio de mensagens e automações via Ethalia.",
     "version": "1.0",
     "contact": {}
   },
   "servers": [
     {
-      "url": "https://api.hadem.io"
+      "url": "https://api.ethalia.com.br"
     }
   ],
   "components": {
@@ -53,7 +53,7 @@
           "pushName": {
             "type": "string",
             "description": "Nome exibido como remetente da mensagem (push name)",
-            "example": "Suporte Hadem"
+            "example": "Suporte Ethalia"
           }
         },
         "required": ["value"]

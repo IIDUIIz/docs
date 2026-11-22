@@ -1,4 +1,4 @@
-# Story fix.packages-workspace: Corrigir problemas de pacotes dos projetos Hadem
+# Story fix.packages-workspace: Corrigir problemas de pacotes dos projetos da Ethalia
 
 ## Status
 
@@ -10,7 +10,7 @@ quality_gate_tools: [dependency_tree, npm_audit, lint, typecheck, test, build]
 
 ## Story
 
-Como responsável pelos projetos Hadem, quero resolver os problemas de pacotes de todos os projetos da pasta Hadem, para instalar e validar suas dependências de forma consistente e compatível com o código existente.
+Como responsável pelos projetos da Ethalia, quero resolver os problemas de pacotes de todos os projetos da pasta Hadem, para instalar e validar suas dependências de forma consistente e compatível com o código existente.
 
 ## Contexto e fontes
 
@@ -136,5 +136,5 @@ Checklist `.aiox-core/product/checklists/story-draft-checklist.md` aplicado em m
 
 ## Change Log
 
-- 2026-10-21 — @sm: criada story Ready for Dev a partir do pedido explícito e do escopo confirmado para todos os projetos Hadem.
+- 2026-10-21 — @sm: criada story Ready for Dev a partir do pedido explícito e do escopo confirmado para todos os projetos da Ethalia.
 - 2026-10-21 — @dev: corrigidos pacotes, configurações e contratos afetados nos seis projetos; auditoria 145 → 21, críticas zeradas; validações e pendências registradas no relatório.
